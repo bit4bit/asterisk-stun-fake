@@ -45,12 +45,7 @@ my $sock = IO::Socket::INET->new(LocalAddr => 'localhost',
 print "Listening at localhost:$port\n";
 
 while ($sock->recv(my $pdu, 20)) {
-    my($port, $ipaddr) = sockaddr_in($sock->peername);
-    my $host = gethostbyaddr($ipaddr, AF_INET);
-
-    my $header = substr $pdu, 0, 20;
-
-    my($omit, $message_length, @transaction) = unpack('nnC16', $header);
+    my($omit, $message_length, @transaction) = unpack('nnC16', $pdu);
 
     # asterisk 13.x and 14.x using chan_sip
     # only use mapped-address
